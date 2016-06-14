@@ -19,8 +19,8 @@ var http = require('http');
  * Create HTTP serverHTTPS.
  */
 
-var httpPort = normalizePort(process.env.OPENSHIFT_NODE4_PORT || process.env.PORT || '8080');
-var ip = normalizePort( process.env.OPENSHIFT_NODE4_IP || '127.0.0.1');
+var httpPort = normalizePort(process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || '8080');
+var ip = normalizePort( process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1');
 var serverHTTP = http.createServer(app);
 serverHTTP.listen(httpPort,ip);
 serverHTTP.on('error', function(error){
