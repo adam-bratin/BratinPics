@@ -1,0 +1,15 @@
+//Created by abratin on 6/11/16.
+extends layout
+
+block content
+    .container
+        h1 Please Enter the email of the person you want to invite
+        form(role='form', action="/invite",method="post", style='max-width: 1000px;')
+            .form-group
+                input.form-control(type='text', name="recipientEmail", placeholder='Enter Recipient Email Address')
+            button.btn.btn-default(type='submit') Submit
+            br
+            a(href='/')
+                button.btn.btn-primary(type="button") Cancel
+
+

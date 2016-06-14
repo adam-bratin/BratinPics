@@ -1,0 +1,98 @@
+extends layout
+
+block styles
+  link(rel='stylesheet', href='/stylesheets/index.css')
+
+block content
+  if (!loggedInUser)
+    a(href="/login") Login
+    br
+    a(href="/register") Register
+  if (loggedInUser)
+    p You are currently logged in as #{loggedInUser.username}
+    a(href="/invite") Invite a friend
+    br
+    a(href="/logout") Logout
+    br
+    .dropdown
+      a(href="#", data-toggle="dropdown").dropdown-toggle Upload Files
+
+      ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu')
+        li
+          div.container
+            div.row
+              div.span12
+                form(action="/uploadFiles", method="post", enctype="multipart/form-data")
+                  input(id='files-select', type="file", name="uploads[]", multiple="multiple", accept="image/*")
+                  p
+                  div.form-actions
+                    input.btn.btn-primary(type='submit', value='Upload')
+            hr
+            div.row
+              div.span12
+                div.progress.progress-striped.active.hide
+                  div.progress-bar(role="progressbar", aria-valuenow="70",
+                  aria-valuemin="0" aria-valuemax="100" style="width:70%")
+                  span.sr-only 70%
+                  //div.progress.progress-striped.active.hide
+                  //  div.bar(style='width: 0%')
+                  //  div.percent() '0%'
+            div.row
+              div(id="status")
+            div.row
+              div.span12
+                div.alert.hide
+                  button.close(type='button', data-dismiss='alert') x
+                  span
+                    strong.message
+
+    script.
+      $('.dropdown-toggle').dropdown()
+
+    if(images && typeof(images) === 'Array')
+    br
+    br
+    div.container
+      - var rotation = { 1: 'rotate(0deg)', 3: 'rotate(180deg)', 6: 'rotate(90deg)', 8: 'rotate(270deg)' };
+      - var newImgArray = convertArrayInto2DArray(images);
+        each row in newImgArray
+          div.row.top-buffer
+          span
+          each img in row
+            - var style = addImageStyle(img);
+            img.col-md-3.img-responsive.pull-left(src=img.path.split('/').splice(-2).join('/'),style=style)
+
+
+      //- for (var i = 0; i < images.length-2; i+=3) {
+      //  - var img1 = images[1];
+      //  - var img2 = images[i+1];
+      //  - var img3 = images[i+2];
+      //  - var style1 = addImageStyle(img1);
+      //  - var style2 = addImageStyle(img2);
+      //  - var style3 = addImageStyle(img3);
+      //  - console.log(style1);
+      //
+      //  div.row.top-buffer
+      //    span
+      //      img.col-md-3.img-responsive.pull-left(src=img1.path.split('/').splice(-2).join('/'),style=style1)
+      //      img.col-md-3.img-responsive.pull-left(src=img2.path.split('/').splice(-2).join('/'), style=style2)
+      //      img.col-md-3.img-responsive.pull-left(src=img3.path.split('/').splice(-2).join('/'),style=style3)
+      //- }
+
+  - function convertArrayInto2DArray(array) {
+    - var newArr = [];
+    - while(array.length) newArr.push(array.splice(0,3));
+    - delete array;
+    - //noinspection JSAnnotator
+    - return newArr;
+  - }
+
+
+  - function addImageStyle(img) {
+      - var rotation = { 1: 'rotate(0deg)', 3: 'rotate(180deg)', 6: 'rotate(90deg)', 8: 'rotate(270deg)' };
+      - var orientation = rotation[img.orientation];
+      - var style =  "-ms-transform:" + orientation + "; " + "-webkit-transform:" + orientation + "; " + "transform" + orientation + "; ";
+      - return style;
+  - }
+block postScripts
+  script(src='/javascripts/index.js')
