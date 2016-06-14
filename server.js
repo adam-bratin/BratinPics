@@ -20,7 +20,7 @@ var http = require('http');
  */
 
 var httpPort = normalizePort(process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || '8080');
-var ip = normalizePort( process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1');
+var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 var serverHTTP = http.createServer(app);
 serverHTTP.listen(httpPort,ip);
 serverHTTP.on('error', function(error){
