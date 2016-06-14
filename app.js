@@ -8,10 +8,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-var mongodbUrl = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGODB_URI || "mongodb://localhost/";
-mongodbUrl = path.join(mongodbUrl,'pics');
 var session = require('express-session');
-mongoose.connect(mongodbUrl);
 const MongoStore = require('connect-mongo')(session);
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
@@ -20,6 +17,29 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var helmet = require('helmet');
 var app = express();
+
+
+var mongodbUrl = '127.0.0.1:27017/' + "passport_local_mongoose_express4";
+
+// if OPENSHIFT env variables are present, use the available connection info:
+if (process.env.OPENSHIFT_MONGODB_DB_URL) {
+  mongodbUrl = process.env.OPENSHIFT_MONGODB_DB_URL + process.env.OPENSHIFT_APP_NAME;
+}
+// Connect to mongodb
+mongoose.connect(mongodbUrl);
+
+var db = mongoose.connection;
+db.on('error', function(error){
+  console.log("Error loading the db - "+ error);
+});
+
+db.on('disconnected', function(){
+  connect(mongodbUrl);
+});
+
+db.on('open', function(){
+  debug(`connected to: ${mongodbUrl}`);
+});
 
 
 // view engine setup
