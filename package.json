@@ -4,7 +4,7 @@
   "private": true,
   "main": "server.js",
   "scripts": {
-    "start": "node --use_strict server.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "body-parser": "^1.15.1",
@@ -16,6 +16,8 @@
     "express": "~4.13.1",
     "express-generator": "^4.13.1",
     "express-session": "^1.13.0",
+    "google-auth-library": "^0.9.8",
+    "googleapis": "^8.2.0",
     "helmet": "^2.1.1",
     "httpolyglot": "^0.1.1",
     "jade": "~1.11.0",
@@ -23,11 +25,10 @@
     "mongoose": "^4.4.20",
     "morgan": "~1.6.1",
     "multer": "^1.1.0",
-    "nodemailer": "^2.4.2",
+    "node-uuid": "^1.4.7",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^4.0.0",
     "serve-favicon": "~2.3.0",
-    "xoauth2": "^1.1.0"
   }
 }

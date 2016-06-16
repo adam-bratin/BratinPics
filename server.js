@@ -9,11 +9,8 @@
 // var path = require('path');
 var app = require('./app');
 var debug = require('debug')('BratinPics:serverHTTPS');
-// var https = require('https');
 var http = require('http');
 
-// var fs = require('fs');
-// var httpolyglot = require('httpolyglot');
 
 /**
  * Create HTTP serverHTTPS.
@@ -29,37 +26,6 @@ serverHTTP.on('error', function(error){
 serverHTTP.on('listening', function(){
   onListening(serverHTTP);
 });
-
-/**
- * Create HTTPS serverHTTPS.
- */
-// var credentials = {key: process.env.HTTPS_PK, cert: process.env.HTTPS_CRT};
-
-// var serverHTTPS = https.createServer(credentials,app);
-// serverHTTPS.listen(httpsPort);
-// serverHTTPS.on('error', function(error){
-//   onError(error,httpsPort);
-// });
-// serverHTTPS.on('listening', function(){
-//   onListening(serverHTTPS);
-// });
-
-
-
-
-// var httppolyglotServer = httpolyglot.createServer(credentials, function(req, res) {
-//   if (!req.socket.encrypted) {
-//     var redirectUrl = `https://${req.headers['host']}${req.url}`;
-//     res.writeHead(301, { 'Location': redirectUrl});
-//     return res.end();
-//   }
-//   return app(req,res);
-// }).listen(port,ip);
-//
-// httppolyglotServer.on('listening', function(){
-//    onListening(httppolyglotServer);
-// });
-
 
 function normalizePort(val) {
   var port = parseInt(val, 10);

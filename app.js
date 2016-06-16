@@ -1,9 +1,6 @@
 var debug = require('debug')('BratinPics:serverHTTPS');
-const assert = require('assert');
-var url = require('url');
 var path = require('path');
 var express = require('express');
-var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -12,12 +9,12 @@ var session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var helmet = require('helmet');
-var app = express();
 
+
+var app = express();
 
 var mongodbUrl = '127.0.0.1:27017/' + "passport_local_mongoose_express4";
 
@@ -46,8 +43,6 @@ db.on('open', function(){
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 
 app.use(helmet());
@@ -88,6 +83,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
+
 // passport config
 var Account = require('./models/Account');
 passport.use(new LocalStrategy(Account.authenticate()));
