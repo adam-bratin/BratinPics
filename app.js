@@ -11,6 +11,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var routes = require('./routes/index');
 var helmet = require('helmet');
+var url = require('url');
 
 var app = express();
 

@@ -45,13 +45,13 @@ exports.saveImages = function(req,res) {
 function saveImage(file,user) {
     return new Promise((resolve)=> {
         try {
-            var orientation = 0;
-            getExifData(path)
-            .then(function (calculatedOrientation) {
-                orientation = calculatedOrientation;
-                return renameFile(file);
+            var newPath = '';
+            renameFile(file)
+            .then(path=>{
+                newPath = path;
+                return getExifData(newPath);
             })
-            .then(function(newPath){
+            .then(function(orientation){
                 return saveImageToDb(file,newPath,orientation,user);
             })
             .then(resolve)
@@ -111,7 +111,7 @@ function renameFile(file) {
     });
 }
 
-function saveImageToDb(file,orientation,user) {
+function saveImageToDb(file,newPath,orientation,user) {
     return new Promise((resolve,reject)=>{
       try{
           var image = new Image({
