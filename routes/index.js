@@ -10,7 +10,7 @@ var multer  = require('multer');
 var imageController = require('../Controllers/Image_Controller');
 var inviteController = require('../Controllers/Invite_Controller');
 var registerController = require('../Controllers/Register_Controller');
-
+var oAuthController = require('../Controllers/Oauth_Controller');
 
 //Upload Files Middleware
 var upload = multer({ dest: path.join(__dirname,'../tmp/'), fileFilter: function(req,file,cb) {
@@ -47,7 +47,7 @@ router.get('/', function(req, res, next) {
 
 });
 
-// router.get('/gmailAuthorized',oAuthController.HandleTokenRequest);
+router.get('/gmailAuthorized',oAuthController.HandleTokenRequest);
 
 router.get('/invite',ensureAuthenticated, function(req,res) {
     res.render('invite');

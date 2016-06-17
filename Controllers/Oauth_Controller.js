@@ -7,7 +7,10 @@ var oAuthToken = require("../models/OAuthToken");
 var moment = require('moment');
 var GoogleAuth = require('google-auth-library');
 var auth = new GoogleAuth();
-exports.oauth2Client = new auth.OAuth2(process.env.GMAIL_CLIENT_ID, process.env.GMAIL_CLIIENT_SECRET, "http://localhost:8080/gmailAuthorized");
+var stack = process.env.STACK || "";
+var redirectBaseUrl = stack === 'Debug' ? "http://localhost:8080" : `https://${procces.env.OPENSHIFT_GEAR_DNS}`;
+exports.oauth2Client = new auth.OAuth2(process.env.GMAIL_CLIENT_ID, process.env.GMAIL_CLIIENT_SECRET,
+  `${redirectBaseUrl}/gmailAuthorized`);
 var scopes = [
   "https://www.googleapis.com/auth/gmail.compose",
   "https://www.googleapis.com/auth/gmail.send",
@@ -20,7 +23,7 @@ exports.authorizationUrl = exports.oauth2Client.generateAuthUrl({
   approval_prompt:"force"
 });
 
-// debug(exports.authorizationUrl);
+debug(exports.authorizationUrl);
 exports.HandleTokenRequest = function(req,res) {
   getTokens(req.query.code)
   .then(tokens=>{
