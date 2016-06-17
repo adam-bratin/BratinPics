@@ -8,7 +8,7 @@ var moment = require('moment');
 var GoogleAuth = require('google-auth-library');
 var auth = new GoogleAuth();
 var stack = process.env.STACK || "";
-var redirectBaseUrl = stack === 'Debug' ? "http://localhost:8080" : `https://${procces.env.OPENSHIFT_GEAR_DNS}`;
+var redirectBaseUrl = stack === 'Debug' ? "http://localhost:8080" : `https://${process.env.OPENSHIFT_GEAR_DNS}`;
 exports.oauth2Client = new auth.OAuth2(process.env.GMAIL_CLIENT_ID, process.env.GMAIL_CLIIENT_SECRET,
   `${redirectBaseUrl}/gmailAuthorized`);
 var scopes = [
