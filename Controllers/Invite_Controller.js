@@ -5,10 +5,10 @@ var constants = require('../public/Constants'),
   emailController = require('../Controllers/Email_Controller');
 
 exports.HandleInvite = function(req,res) {
-  var recipientEmail = req.query.recipientEmail;
+  var recipientEmail = req.body.recipientEmail;
   if (!recipientEmail) {
     var badEmail = constants.StatusCodes.badEmail;
-    res.status(badEmail.code).send(badEmail.satus);
+    res.status(badEmail.code).send(badEmail.status);
   } else {
     var verifyAccountPromise = verifyAccount(recipientEmail);
     var verifyInvitePromise = verifyInvite(recipientEmail);
