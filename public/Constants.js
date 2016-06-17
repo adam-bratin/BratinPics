@@ -10,5 +10,6 @@ exports.StatusCodes = Object.freeze({
   codeRedeemed: {code: 456, status: "code already redeemed"},
   codeExpired: {code: 457, status: "code Expired"},
   noUserFound: {code:458, status: "user not found"},
+  noFilesUploaded: {code:459, status: "no files uploaded"},
   serverError: {code:500, status: "unable to process your request"}
 });

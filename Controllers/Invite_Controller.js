@@ -5,7 +5,7 @@ var constants = require('../public/Constants'),
   emailController = require('../Controllers/Email_Controller');
 
 exports.HandleInvite = function(req,res) {
-  var recipientEmail = req.body.recipientEmail;
+  var recipientEmail = req.query.recipientEmail;
   if (!recipientEmail) {
     var badEmail = constants.StatusCodes.badEmail;
     res.status(badEmail.code).send(badEmail.satus);
@@ -21,7 +21,8 @@ exports.HandleInvite = function(req,res) {
     })
     .then((result)=> {
       return res.status(result.code).send(result.status);
-    }, (error)=> {
+    })
+    .catch(error=> {
       return res.status(error.code).send(error.status);
     });
   }

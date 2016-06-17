@@ -15,11 +15,18 @@ var http = require('http');
 /**
  * Create HTTP serverHTTPS.
  */
+var oauthController = require('./Controllers/Oauth_Controller');
 
 var httpPort = normalizePort(process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || '8080');
 var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 var serverHTTP = http.createServer(app);
-serverHTTP.listen(httpPort,ip);
+oauthController.loadOauthClient().then(function (){
+  serverHTTP.listen(httpPort,ip);
+}).catch(function() {
+  process.exit();
+});
+//serverHTTP.listen(httpPort,ip);
+
 serverHTTP.on('error', function(error){
   onError(error,httpPort);
 });

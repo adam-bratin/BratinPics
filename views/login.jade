@@ -8,11 +8,12 @@ block content
         br
         form(role='form', action="/login",method="post", style='max-width: 300px;')
             .form-group
-                input.form-control(type='emailController', name="username", placeholder='Enter Email Address')
+                input.form-control( id='username',type='emailController', name="username", placeholder='Enter Email Address')
             .form-group
                 input.form-control(type='password', name="password", placeholder='Password')
             button.btn.btn-default(type='submit') Submit
             br
             a(href='/')
                 button.btn.btn-primary(type="button") Cancel
-
+            br
+            a(href='javascript:window.location = "/forgotPassword?username=" + document.getElementById("username").value') ForgotPassword

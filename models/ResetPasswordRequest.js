@@ -8,8 +8,8 @@ var uuid = require('node-uuid');
 
 var ResetPasswordRequestSchema = new Schema({
   ResetCode:{type: String, default: uuid.v1() },
-  Email:String,
-  Redemed:{type:Boolean, default: false},
+  Email:{type : String, unique:true},
+  Redeemed:{type:Boolean, default: false},
   Issued: { type: Date, default: moment() },
   Expires: {type: Date, default: moment().add(1,'hour')}
 });
