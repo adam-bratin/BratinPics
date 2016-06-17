@@ -23,9 +23,10 @@ var serverHTTP = http.createServer(app);
 oauthController.loadOauthClient().then(function (){
   serverHTTP.listen(httpPort,ip);
 }).catch(function() {
-  process.exit();
+  debug("GmailOAuthFailed");
+  serverHTTP.listen(httpPort,ip);
 });
-//serverHTTP.listen(httpPort,ip);
+
 
 serverHTTP.on('error', function(error){
   onError(error,httpPort);

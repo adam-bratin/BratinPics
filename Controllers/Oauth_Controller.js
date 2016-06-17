@@ -69,7 +69,7 @@ exports.loadOauthClient = function (forceRefresh) {
     })
     .then(tokens=>{
       if(tokens) {
-        return saveTokens(tokens);
+        return saveTokens(tokens,process.env.GMAIL_USER,"Google");
       }
     })
     .then(function(tokens) {
