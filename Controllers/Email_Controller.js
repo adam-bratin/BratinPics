@@ -34,7 +34,8 @@ exports.SendInviteEmail = function(req,inviteCode) {
           var serverError = constants.StatusCodes.serverError;
           reject(serverError);
         } else {
-          resolve();
+          var ok = constants.StatusCodes.ok;
+          resolve(ok);
         }
       });
     } catch (err) {
