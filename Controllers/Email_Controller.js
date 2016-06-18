@@ -4,8 +4,6 @@
 var nodemailer = require("nodemailer");
 var debug = require('debug')('BratinPics:serverHTTPS');
 var constants = require("../public/Constants");
-var google = require('googleapis');
-var gmail = google.gmail('v1');
 var moment = require('moment');
 var nodemailer = require('nodemailer');
 
