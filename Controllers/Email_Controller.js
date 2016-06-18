@@ -2,7 +2,6 @@
  * Created by abratin on 6/9/16.
  */
 var nodemailer = require("nodemailer");
-var xoauth2 = require('xoauth2');
 var debug = require('debug')('BratinPics:serverHTTPS');
 var constants = require("../public/Constants");
 var google = require('googleapis');
