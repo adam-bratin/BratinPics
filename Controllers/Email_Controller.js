@@ -22,7 +22,7 @@ exports.SendInviteEmail = function(req,inviteCode) {
         subject: "You are invited to BratinPics",
         html: `Hey come check out the Bratin family pictures.<br>
         Below is a link to register for an account.<br>  
-        ${req.protocol}: ${req.hostname}:${stack === 'Debug' ? req.socket.localPort : ''}/register?invitecode=${inviteCode.InviteCode}  
+        ${req.protocol}://${req.hostname}${stack === 'Debug' ? `:${req.socket.localPort}` : ''}/register?invitecode=${inviteCode.InviteCode}  
         <br>
         This code will expire in ${Math.round(moment.duration(moment(inviteCode.Expires).diff(moment(inviteCode.Issued))).asDays()) } days<br>  
         Thanks,<br>  
