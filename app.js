@@ -18,7 +18,7 @@ var app = express();
 var mongodbUrl = '127.0.0.1:27017/' + "passport_local_mongoose_express4";
 
 // if OPENSHIFT env variables are present, use the available connection info:
-if (process.env.OPENSHIFT_MONGODB_DB_URL) {
+if (process.env.MONGODB_URL) {
   mongodbUrl = process.env.MONGODB_URL + process.env.OPENSHIFT_APP_NAME;
 }
 // Connect to mongodb
