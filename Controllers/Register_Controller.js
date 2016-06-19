@@ -92,7 +92,6 @@ function verifyInviteCode(code) {
             var codeNotFound = constants.StatusCodes.codeNotFound;
             reject(codeNotFound);
           } else if (foundCode.Redemed) {
-            res.status(400).send("code already redeemed");
             var codeRedeemed = constants.StatusCodes.codeRedeemed;
             reject(codeRedeemed);
           } else if (moment().diff(moment(foundCode.Expires)) >= 0) {
