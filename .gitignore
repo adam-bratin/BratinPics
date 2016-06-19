@@ -384,3 +384,4 @@ $RECYCLE.BIN/
 *.key
 *.csr
 *.crt
+/.env

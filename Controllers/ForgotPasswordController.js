@@ -30,7 +30,7 @@ exports.HandleLostPasswordRequest = function(req,res) {
           Issued: moment(),
           Expires: moment().add(1,'hour')
         };
-        ResetPasswordRequest.findOneAndUpdate(query,newRequest,function(err,resetRequest) {
+        ResetPasswordRequest.findOneAndUpdate(query,newRequest,{new:true, upsert:true},function(err,resetRequest) {
           if(err){
             debug(err);
             var serverError = constants.StatusCodes.serverError;

@@ -137,6 +137,32 @@ function saveImageToDb(file,newPath,orientation,user) {
     });
 }
 
+exports.SaveFlickrImageToDb = function(image,submitter) {
+
+};
+
+exports.retrieveImageByFlickrId = function (id) {
+  return new Promise((resolve,reject)=>{
+      try {
+          Image.findOne({flickrId: id}, function(err, image) {
+              if(err) {
+                  debug(err);
+              }
+              if(err || ! image) {
+                  var serverError = constants.StatusCodes.serverError;
+                  reject(serverError);
+              } else {
+                  resolve(image);
+              }
+          })
+      } catch(error) {
+          debug(error);
+          var serverError = constants.StatusCodes.serverError;
+          reject(serverError);
+      }
+  })
+};
+
 exports.findImagesBySubmitter = function (user) {
   return new Promise(resolve=>{
       Image.find({submitter:user},function(err,images) {

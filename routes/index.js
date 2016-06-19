@@ -10,6 +10,7 @@ var multer  = require('multer');
 var imageController = require('../Controllers/Image_Controller');
 var inviteController = require('../Controllers/Invite_Controller');
 var registerController = require('../Controllers/Register_Controller');
+var flikrController = require('../Controllers/Flicker_Controller');
 
 //Upload Files Middleware
 var upload = multer({ dest: path.join(__dirname,'../tmp/'), fileFilter: function(req,file,cb) {
@@ -79,9 +80,12 @@ router.get('/forgotPassword', function(req, res) {
   
 });
 
+// router.post('/uploadFiles',ensureAuthenticated,upload.array('uploads[]'),
+//   imageController.saveImages);
 router.post('/uploadFiles',ensureAuthenticated,upload.array('uploads[]'),
-  imageController.saveImages);
+  flikrController.HandleFilesUploadToFlickr);
 
+router.get('/handleFlickrAuth', flikrController.handleFlikrOauthRequest);
 
 module.exports = router;
 

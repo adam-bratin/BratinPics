@@ -10,7 +10,7 @@
 var app = require('./app');
 var debug = require('debug')('BratinPics:serverHTTPS');
 var http = require('http');
-
+var flikrController = require('./Controllers/Flicker_Controller');
 
 /**
  * Create HTTP serverHTTPS.
@@ -19,7 +19,9 @@ var http = require('http');
 var httpPort = normalizePort(process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || '8080');
 var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 var serverHTTP = http.createServer(app);
+
 serverHTTP.listen(httpPort,ip);
+flikrController.authenticateFlickr();
 
 
 serverHTTP.on('error', function(error){
@@ -27,6 +29,7 @@ serverHTTP.on('error', function(error){
 });
 serverHTTP.on('listening', function(){
   onListening(serverHTTP);
+
 });
 
 function normalizePort(val) {
