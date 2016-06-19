@@ -7,6 +7,7 @@ var Account = require('../models/Account');
 var constants = require("../public/Constants");
 var moment = require('moment');
 var debug = require('debug')('BratinPics:serverHTTPS');
+var uuid = require('node-uuid');
 
 exports.registerUser = function (req, res, next) {
   var inviteCode = req.body.invitecode;
@@ -34,6 +35,7 @@ exports.registerUser = function (req, res, next) {
 };
 
 exports.isValidInviteCode = function(req,res,next) {
+  uuid.v1();
   var inviteCode = req.query.invitecode;
   verifyInviteCode(inviteCode).then((code)=>{
     next();

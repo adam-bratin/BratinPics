@@ -2,7 +2,8 @@ var constants = require('../public/Constants'),
   debug = require('debug')('BratinPics:serverHTTPS'),
   Account = require('../models/Account');
   InviteCode = require('../models/InviteCode'),
-  emailController = require('../Controllers/Email_Controller');
+  emailController = require('../Controllers/Email_Controller'),
+  uuid = require('node-uuid');
 
 exports.HandleInvite = function(req,res) {
   var recipientEmail = req.body.recipientEmail;
@@ -62,7 +63,7 @@ function verifyAccount(recipientEmail) {
 
 function saveCode(recipientEmail) {
   return new Promise((resolve, reject)=> {
-    var code = new InviteCode({Email: recipientEmail});
+    var code = new InviteCode({Email: recipientEmail, InviteCode: uuid.v1()});
     code.save(function (err) {
       if (err) {
         debug(err);

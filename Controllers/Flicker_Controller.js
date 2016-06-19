@@ -173,7 +173,7 @@ exports.HandleFilesUploadToFlickr = function (req, res) {
     }
     results.forEach(function(photo){
       
-    })
+    });
     res.status(200).json(result);
   });
 };

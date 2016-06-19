@@ -6,7 +6,7 @@ var debug = require('debug')('BratinPics:serverHTTPS');
 var moment = require('moment');
 var Account = require('../models/Account');
 var ResetPasswordRequest = require('../models/ResetPasswordRequest');
-
+var uuid = require('node-uuid');
 
 exports.HandleLostPasswordRequest = function(req,res) {
   var lostUserEmail = req.query.username;
@@ -26,6 +26,7 @@ exports.HandleLostPasswordRequest = function(req,res) {
         var query = { Email: lostUserEmail};
         var newRequest = {
           Email: lostUserEmail,
+          ResetCode: uuid.v1(),
           Redeemed:false,
           Issued: moment(),
           Expires: moment().add(1,'hour')
