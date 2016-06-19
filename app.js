@@ -15,7 +15,8 @@ var url = require('url');
 
 var app = express();
 
-var mongodbUrl = '127.0.0.1:27017/' + "passport_local_mongoose_express4";
+var mongodbUrl = '127.0.0.1:27017/';
+mongodbUrl += process.env.PORT_FORWARDING === 'true' ? "pics" : "passport_local_mongoose_express4";
 
 // if OPENSHIFT env variables are present, use the available connection info:
 if (process.env.MONGODB_URL) {

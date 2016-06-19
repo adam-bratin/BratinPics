@@ -38,7 +38,7 @@ var upload = multer({ dest: path.join(__dirname,'../tmp/'), fileFilter: function
 /* GET home page. */
 router.get('/', function(req, res, next) {
   if(req.isAuthenticated()) {
-    imageController.findImagesBySubmitter(req.user).then(function(images) {
+    imageController.findAllImages(req.user).then(function(images) {
       res.render('index', { title: 'Express', loggedInUser: req.user, images: images});
     });
   } else {

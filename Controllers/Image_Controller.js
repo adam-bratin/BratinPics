@@ -72,6 +72,23 @@ exports.retrieveImageByFlickrId = function (id) {
   })
 };
 
+exports.findAllImages = function() {
+    return new Promise(resolve=> {
+        try {
+            Image.find({}, function (err, images) {
+                if(err) {
+                    debug(err);
+                }
+
+                resolve(images);
+            })
+        } catch(error) {
+            debug(error);
+            resolve(null);
+        }
+    })
+}
+
 exports.findImagesBySubmitter = function (user) {
   return new Promise(resolve=>{
       Image.find({submitter:user},function(err,images) {
