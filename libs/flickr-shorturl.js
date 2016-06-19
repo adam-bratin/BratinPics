@@ -74,7 +74,7 @@ function getLastInUrl(url) {
 	return url[url.length-1];
 }
 
-function encodeFlickrUrl(url) {
+exports.encodeFlickrUrl = function(url) {
 	// Returns a flic.kr URL from a full flickr.com URL
 	return 'http://flic.kr/p/' + base_encode(getLastInUrl(url));
-}
+};

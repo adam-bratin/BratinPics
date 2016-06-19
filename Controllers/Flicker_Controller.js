@@ -8,6 +8,7 @@ var Flickr = require("flickrapi"),
   constants = require('../public/Constants'),
   OauthToken = require('../models/OauthToken'),
   imageController = require('./Image_Controller'),
+  flickrUrlShort = require('../libs/flickr-shorturl'),
   flickrClient = null,
   flickrOptions = null;
 
@@ -156,27 +157,114 @@ function generateFlickrOptions(oAuthToken) {
 //<editor-fold desc="APIs">
 exports.HandleFilesUploadToFlickr = function (req, res) {
   var photos = req.files.map((file)=> {
-    var newPath = file.path+path.extname(file.originalname);
-    fs.renameSync(file.path,newPath);
-    return {
-      title: file.originalname,
-      tags: [
-        `submitter:${req.user.username}`
-      ],
-      photo: newPath
-    }
+    return prepareFileForUploadToFlickr(file,req.user);
   });
-  Flickr.upload({photos:photos}, flickrOptions, function(err, results) {
-    if(err) {
-      var serverError = constants.StatusCodes.serverError;
-      res.stats(serverError.code).send(serverError.status);
-    }
-    results.forEach(function(photo){
-      
+  uploadToFlickr(photos)
+  .then(getFlickrPhotoInfo)
+  .then(function(photos) {
+    var dbImages = photos.map(function(photo){
+      return saveFlickrPhotoToDb(photo.photo,req.user,photos);
     });
-    res.status(200).json(result);
+    return Promise.all(dbImages);
+  })
+  .then(function(dbPhotos) {
+    dbPhotos.filter(function (val) {
+      return val !== null;
+    });
+    req.files.forEach(function(upload) {
+      fs.unlinkSync(`${upload.path}${path.extname(upload.originalname)}`);
+    });
+    res.status(200).json({
+      photos: dbPhotos
+    });
+  }).catch(function(error){
+    res.status(error.code || 500).send(status);
   });
 };
+
+function prepareFileForUploadToFlickr(file, submitter) {
+  var newPath = file.path+path.extname(file.originalname);
+  fs.renameSync(file.path,newPath);
+  return {
+    title: file.originalname,
+    tags: [
+      `submitter:${submitter.username}`
+    ],
+    is_public:0,
+    photo: newPath
+  }
+}
+
+function uploadToFlickr(photos) {
+  return new Promise((resolve,reject)=> {
+    try {
+      Flickr.upload({photos:photos}, flickrOptions, function(err, results) {
+        if(err) {
+          debug(err);
+          var serverError = constants.StatusCodes.serverError;
+          reject(serverError);
+        } else {
+          resolve(results);
+        }
+      });
+    } catch(error) {
+      debug(error);
+      var serverError = constants.StatusCodes.serverError;
+      reject(serverError);
+    }
+  });
+}
+
+function getFlickrPhotoInfo(photoId) {
+  return new Promise((resolve,reject)=> {
+    try {
+      if(Array.isArray(photoId)) {
+        var photosInfo = photoId.map(getFlickrPhotoInfo);
+        Promise.all(photosInfo)
+        .then(resolve)
+        .catch(reject);
+      } else {
+        flickrClient.photos.getInfo({photo_id: photoId}, function (err, results) {
+          if (err) {
+            debug(err);
+            var serverError = constants.StatusCodes.serverError;
+            reject(serverError);
+          } else {
+            resolve(results);
+          }
+        });
+      }
+    } catch(error) {
+      debug(error);
+      var serverError = constants.StatusCodes.serverError;
+      reject(serverError);
+    }
+  });
+}
+
+function saveFlickrPhotoToDb(photo,user, reqFiles) {
+  return new Promise((resolve) => {
+    try {
+      var flickrUrl = `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`;
+      var flickrUrlThumbnail = `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_t.jpg`;
+      var dbPhoto = {
+        name: photo.title._content,
+        submitter: user,
+        flickrId: photo.id,
+        flickrUrl: flickrUrl,
+        flickrThumbnail: flickrUrlThumbnail
+      };
+      imageController.saveImageToDb(dbPhoto)
+      .then(resolve)
+      .catch(error =>{
+        resolve(null);
+      })
+    } catch(error) {
+      debug(error);
+      resolve(null);
+    }
+  });
+}
 
 exports.getPhotosBySubmitter = function (user,page) {
   return new Promise((resolve, reject)=>{

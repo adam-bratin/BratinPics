@@ -1,0 +1,14 @@
+.top-buffer {
+    -margin-top: 100px;
+    -margin-bottom: 100px;
+}
+
+
+a.col-md-6{
+    display: inline-block
+}
+
+ul
+{
+    list-style-type: none;
+}
