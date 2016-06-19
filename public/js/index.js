@@ -6,6 +6,42 @@ $(document).ready(function() {
     $("a[rel^='prettyPhoto']").prettyPhoto();
 });
 
+$('#toggleSelectMode').click(function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var isDisabled = $( ".selectable" ).selectable( "option", "disabled" );
+    var trigger = isDisabled ? "enable" : "disable";
+    $('.selectable').selectable(trigger);
+});
+
+$('a').click(function(e){
+    var isDisabled = $( ".selectable" ).selectable( "option", "disabled" );
+    if(!isDisabled) {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+    }
+});
+
+$(function() {
+    $(".selectable").selectable({
+        filter:'img',
+        selecting:function(e, ui) { // on select
+            var curr = $(ui.selecting.tagName, e.target).index(ui.selecting); // get selecting item index
+            if(e.shiftKey && prev > -1) { // if shift key was pressed and there is previous - select them all
+                $(ui.selecting.tagName, e.target).slice(Math.min(prev, curr), 1 + Math.max(prev, curr)).addClass('ui-selected');
+                prev = -1; // and reset prev
+            } else {
+                prev = curr; // othervise just save prev
+            }
+        }
+    });
+    $(".selectable").on("selectablestart", function (event, ui) {
+        event.originalEvent.ctrlKey = true;
+    });
+    $('.selectable').selectable('disable');
+});
+
+
 $(function() {
 
     var showInfo = function(message) {
@@ -85,58 +121,5 @@ $(function() {
 
         return (bytes / 1000).toFixed(2) + ' KB';
     }
-
-
-
-    // $('form').on('submit', function(evt) {
-    //     evt.preventDefault();
-    //     var files = $('#files-select')[0].files;
-    //     var formData = new FormData();
-    //     var validFilesCount = 0;
-    //     // loop through all the selected files
-    //     for (var i = 0; i < files.length; i++) {
-    //         var file = files[i];
-    //         if (/image\/*/.test(file.type)) {
-    //             // add the files to formData object for the data payload
-    //             validFilesCount++;
-    //             formData.append('uploads[]', file, file.name);
-    //         }
-    //     }
-    //     if(validFilesCount>0) {
-    //         var progressBar = $('.progress-bar');
-    //         var status = $('#status');
-    //         var form = $(this)[0];
-    //         $.post({
-    //             async: true,
-    //             url: form.action,
-    //             data: formData,
-    //             processData: false,
-    //             contentType: false,
-    //             beforeSend: function (XMLHttpRequest) {
-    //                 status.empty();
-    //                 progressBar.text('0%');
-    //                 progressBar.width('0%');
-    //                 $('div.progress').removeClass('hide');
-    //             },
-    //             xhr: function() {
-    //                 // get the native XmlHttpRequest object
-    //                 var xhr = $.ajaxSettings.xhr();
-    //                 // set the onprogress event handler
-    //                 xhr.upload.onprogress = function (evt) {
-    //                     if (evt.lengthComputable) {
-    //                         var percentComplete = 100 * (evt.loaded / evt.total);
-    //                         var percentVal = percentComplete + '%';
-    //                         progressBar.width(percentVal);
-    //                         progressBar.text(percentVal);
-    //                     }
-    //                     return xhr;
-    //                 };
-    //             },
-    //             complete: function (xhr) {
-    //                 status.html(xhr.responseText);
-    //             }
-    //         });
-    //     }
-    // });
 
 });

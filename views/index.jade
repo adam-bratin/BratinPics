@@ -1,12 +1,12 @@
 extends layout
+
 block preStyles
   link(rel='stylesheet', href='/vendor/prettyPhoto.css')
+  link(rel='stylesheet', href='/vendor/responsivelylazy.min.css')
 
 block styles
   link(rel='stylesheet', href='/css/index.css')
 
-block preScripts
-  script(src='vendor/lazysizes.min.js')
 
 block content
   if (!loggedInUser)
@@ -37,22 +37,25 @@ block content
     script.
       $('.dropdown-toggle').dropdown()
 
+    button(id="toggleSelectMode", Content="Enter Select Mode")
     if(images && typeof(images) === 'Array')
     br
     br
     div.container
       - var newImgArray = convertArrayInto2DArray(images);
-        div.row.top-buffer
+      - var i = 0;
+        div.row.top-buffer.selectable.ui-selectable(id='selectArea')
           each row in newImgArray
-            div.row
-              each img in row
-                span
-                - var urlSplit = img.flickrUrl.split('.');
-                - var baseUrl = urlSplit.splice(0,urlSplit.length-1).join('.');
-                - var extension = urlSplit[urlSplit.length-1];
-                - var data_srcset= baseUrl + "_q." + extension + " 300w," + baseUrl + "_z." + extension + " 600w," + baseUrl + "_h." + extension + " 900w";
-                a.col-md-2(rel="prettyPhoto[gallery]", href=img.flickrUrl, alt=img.name)
-                  img.img-responsive.pull-left.lazyload(height='126.67px', width='126.67px', src=baseUrl + "_q." + extension, data-srcset=data_srcset)
+            each img in row
+              - var urlSplit = img.flickrUrl.split('.');
+              - var baseUrl = urlSplit.splice(0,urlSplit.length-1).join('.');
+              - var extension = urlSplit[urlSplit.length-1];
+              - var data_src= baseUrl + "_q." + extension;
+              - var data_srcset= baseUrl + "_q." + extension + " 100w," + baseUrl + "_z." + extension + " 600w," + baseUrl + "_b." + extension + " 900w";
+              a.col-sm-4.col-md-2(rel="prettyPhoto[gallery]", href=img.flickrUrl, alt=img.name)
+                img.responsively-lazy.ui-widget-content.ui-selectee(alt="" style="width: 126.667px; height: 126.667px;", src=img.flickrUrl, data-srcset=data_src, srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==")
+
+
 
   - function convertArrayInto2DArray(array) {
     - var newArr = [];
@@ -64,8 +67,10 @@ block content
 
 block postScripts
   script(src='/vendor/jquery.prettyPhoto.js')
-  script(src='/js/index.js')
+  script(async src='/vendor/responsivelyLazy.min.js')
   script(src="vendor/jquery.knob.js")
-  script(src="vendor/jquery.ui.widget.js")
+  script(src="vendor/jquery-ui.min.js")
   script(src="vendor/jquery.iframe-transport.js")
   script(src="vendor/jquery.fileupload.js")
+  script(src='/js/index.js')
+
