@@ -12,6 +12,11 @@ $('#toggleSelectMode').click(function(e) {
     var isDisabled = $( ".selectable" ).selectable( "option", "disabled" );
     var trigger = isDisabled ? "enable" : "disable";
     $('.selectable').selectable(trigger);
+    if(!isDisabled) {
+        $('.ui-widget-content').removeClass('ui-selected');
+        $('.ui-widget-content').removeClass('ui-selectee');
+        $('.footer').removeClass('show');
+    }
 });
 
 $('a').click(function(e){
@@ -32,6 +37,16 @@ $(function() {
                 prev = -1; // and reset prev
             } else {
                 prev = curr; // othervise just save prev
+            }
+        },
+        selected: function(e) {
+            if($(".ui-widget-content.ui-selected").length > 0) {
+                $('.footer').addClass("show");
+            }
+        },
+        unselected: function(e) {
+            if($(".ui-widget-content.ui-selected").length <= 0) {
+                $('.footer').removeClass("show");
             }
         }
     });
