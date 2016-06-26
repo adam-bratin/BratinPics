@@ -9,7 +9,7 @@ block content
         p(id="status")
         form(role='form', action="/login",method="post", style='max-width: 300px;')
             .form-group
-                input.form-control( id='username',type='emailController', name="username", required, autofocus, placeholder='Enter Email Address')
+                input.form-control( id='username',type='email', name="username", required, autofocus, placeholder='Enter Email Address')
             .form-group
                 input.form-control(id='password', type='password', name="password", required, placeholder='Password')
             button.btn.btn-default(type='submit') Submit
