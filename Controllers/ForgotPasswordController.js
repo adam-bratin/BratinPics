@@ -136,7 +136,7 @@ function validateResetRequest(requestCode) {
         } else if(resetRequest.Redeemed) {
           var requestRedeemed = constants.StatusCodes.codeRedeemed;
           reject(requestRedeemed);
-        } else if (moment().diff(moment(requestCode.Expires)) >= 0) {
+        } else if (moment().diff(moment(resetRequest.Expires)) >= 0) {
           var codeExpired = constants.StatusCodes.codeExpired;
           reject(codeExpired);
         }  else {
