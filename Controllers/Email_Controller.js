@@ -48,13 +48,13 @@ exports.SendPasswordResetEmail = function(req,resetRequest) {
   return new Promise((resolve, reject) => {
     try {
       var message = {
-        to: `${inviteCode.Email}`,
+        to: `${resetRequest.Email}`,
         subject: `Reset Password Request for ${req.hostname}`,
         html: `A request came to change your password.<br>
         Below is a link to change your password.<br>  
-        ${req.protocol}: ${req.hostname}:${stack === 'Debug' ? req.socket.localPort : ''}/resetPassword?resetCode=${resetRequest.ResetCode}  
+        ${req.protocol}://${req.hostname}${stack === 'Debug' ? `:${req.socket.localPort}` : ''}/resetPassword?resetCode=${resetRequest.ResetCode}
         <br>
-        This code will expire in ${Math.round(moment.duration(moment(inviteCode.Expires).diff(moment(inviteCode.Issued))).asDays()) } days<br>  
+        This code will expire in ${Math.round(moment.duration(moment(resetRequest.Expires).diff(moment(resetRequest.Issued))).asMinutes()) } minutes<br>  
         Thanks,<br>  
         BratinPics`
       };

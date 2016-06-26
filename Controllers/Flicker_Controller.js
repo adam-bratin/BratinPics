@@ -155,7 +155,7 @@ function generateFlickrOptions(oAuthToken) {
 //</editor-fold>
 
 //<editor-fold desc="APIs">
-exports.HandleFilesUploadToFlickr = function (req, res) {
+exports.handleFilesUploadToFlickr = function (req, res) {
   var photos = req.files.map((file)=> {
     return prepareFileForUploadToFlickr(file,req.user);
   });
@@ -344,4 +344,8 @@ function createImageJsonReturn(fPhoto, dbPhoto) {
     return {};
   }
 }
+
+exports.handleDeletePhotos = function(req,res) {
+
+};
 //</editor-fold>

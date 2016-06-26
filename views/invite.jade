@@ -6,7 +6,7 @@ block content
         h1 Please Enter the email of the person you want to invite
         form(role='form', action="/invite",method="post", style='max-width: 1000px;')
             .form-group
-                input.form-control(type='text', name="recipientEmail", placeholder='Enter Recipient Email Address')
+                input.form-control(type='text', name="recipientEmail", placeholder='Enter Recipient Email Address', autofocus)
             button.btn.btn-default(type='submit') Submit
             br
             a(href='/')

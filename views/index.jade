@@ -53,7 +53,7 @@ block content
               - var data_src= baseUrl + "_q." + extension;
               - var data_srcset= baseUrl + "_q." + extension + " 100w," + baseUrl + "_z." + extension + " 600w," + baseUrl + "_b." + extension + " 900w";
               a.col-sm-8.col-md-4.col-lg-2(rel="prettyPhoto[gallery]", href=img.flickrUrl, alt=img.name)
-                img.responsively-lazy.ui-widget-content.ui-selectee(alt="" style="width: 126.667px; height: 126.667px;", src=img.flickrUrl, data-srcset=data_src, srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==")
+                img.responsively-lazy.ui-widget-content.ui-selectee(alt="" style="width: 126.667px; height: 126.667px;", src=img.flickrUrl, data-submitter=img.submitter, data-srcset=data_src, srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==")
     div.footer
       a.btn.btn-info.btn-lg
         div(style="float: left; margin-right:5px") Delete Photos

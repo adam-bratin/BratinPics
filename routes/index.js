@@ -11,6 +11,7 @@ var imageController = require('../Controllers/Image_Controller');
 var inviteController = require('../Controllers/Invite_Controller');
 var registerController = require('../Controllers/Register_Controller');
 var flikrController = require('../Controllers/Flicker_Controller');
+var forgotPasswordController = require('../Controllers/ForgotPasswordController');
 
 //Upload Files Middleware
 var upload = multer({ dest: path.join(__dirname,'../tmp/'), fileFilter: function(req,file,cb) {
@@ -64,11 +65,15 @@ router.post('/register', registerController.registerUser, function(req, res) {
 });
 
 router.get('/login', function(req, res) {
-  res.render('login', { user : req.user });
+  if(req.isAuthenticated()) {
+    res.redirect('/');
+  } else {
+    res.render('login', {user: req.user});
+  }
 });
 
 router.post('/login', passport.authenticate('local'), function(req, res) {
-  res.redirect('/');
+  res.status(200).json({url:'/'});
 });
 
 router.get('/logout', function(req, res) {
@@ -76,16 +81,16 @@ router.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
-router.get('/forgotPassword', function(req, res) {
-  
-});
+router.post('/forgotPassword', forgotPasswordController.handleLostPasswordRequest);
+router.get('/resetPassword',forgotPasswordController.validateResetRequest);
+router.post('/resetPassword',forgotPasswordController.handlePasswordChange);
 
-// router.post('/uploadFiles',ensureAuthenticated,upload.array('uploads[]'),
-//   imageController.saveImages);
 router.post('/uploadFiles',ensureAuthenticated,upload.array('uploads[]'),
-  flikrController.HandleFilesUploadToFlickr);
+  flikrController.handleFilesUploadToFlickr);
 
 router.get('/handleFlickrAuth', flikrController.handleFlikrOauthRequest);
+
+router.delete('/file', ensureAuthenticated, flikrController.handleDeletePhotos);
 
 module.exports = router;
 

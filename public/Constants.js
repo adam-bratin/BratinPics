@@ -11,5 +11,9 @@ exports.StatusCodes = Object.freeze({
   codeExpired: {code: 457, status: "code Expired"},
   noUserFound: {code:458, status: "user not found"},
   noFilesUploaded: {code:459, status: "no files uploaded"},
+  noEmailSent: {code:460, status:"no email was sent"},
+  missingPassword: {code:461, status:"You are missing a password"},
+  missingConfirmPassword: {code:462, status:"You are missing a confirm password"},
+  noPasswordMatch: {code:463, status:"Passwords don't match"},
   serverError: {code:500, status: "unable to process your request"}
 });

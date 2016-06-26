@@ -6,6 +6,7 @@
  * Module dependencies.
  */
 
+var env = require('dotenv').config({path: './.env'});
 // var path = require('path');
 var app = require('./app');
 var debug = require('debug')('BratinPics:serverHTTPS');
